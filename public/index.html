@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPS-CTS · Parent Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg app-navbar">
+  <div class="container-fluid px-4">
+    <span class="navbar-brand d-flex align-items-center gap-2">
+      <span class="brand-mark-sm">🧭</span> GPS-BASED CHILD TRACKING SYSTEM
+    </span>
+
+    <div class="d-flex align-items-center gap-3 ms-auto">
+      <select id="childSelector" class="form-select form-select-sm child-selector"></select>
+      <button id="addChildBtn" class="btn btn-sm btn-soft-pink"><i class="fa-solid fa-plus"></i> Add Child</button>
+      <span id="connStatus" class="badge conn-badge offline">● offline</span>
+      <button id="logoutBtn" class="btn btn-sm btn-outline-light">Log out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid px-4 mt-3">
+
+  <ul class="nav nav-pills app-tabs mb-3" id="mainTabs">
+    <li class="nav-item"><button class="nav-link active" data-tab="overview">Overview</button></li>
+    <li class="nav-item"><button class="nav-link" data-tab="map">Map</button></li>
+    <li class="nav-item"><button class="nav-link" data-tab="health">Health</button></li>
+    <li class="nav-item"><button class="nav-link" data-tab="geofence">Geofence</button></li>
+    <li class="nav-item"><button class="nav-link" data-tab="alerts">Alerts <span id="alertBadge" class="badge rounded-pill bg-danger d-none">0</span></button></li>
+    <li class="nav-item"><button class="nav-link" data-tab="settings">Settings</button></li>
+  </ul>
+
+  <!-- OVERVIEW -->
+  <div class="tab-pane" id="tab-overview">
+    <div class="row g-3">
+      <div class="col-md-3 col-6">
+        <div class="stat-card">
+          <div class="stat-icon">❤️</div>
+          <div class="stat-value" id="ovHeartRate">--</div>
+          <div class="stat-label">Heart Rate (bpm)</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="stat-card">
+          <div class="stat-icon">🫁</div>
+          <div class="stat-value" id="ovSpo2">--</div>
+          <div class="stat-label">SpO2 (%)</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="stat-card">
+          <div class="stat-icon">🌡️</div>
+          <div class="stat-value" id="ovTemp">--</div>
+          <div class="stat-label">Temperature (°C)</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="stat-card">
+          <div class="stat-icon">🔋</div>
+          <div class="stat-value" id="ovBattery">--</div>
+          <div class="stat-label">Battery</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mt-1">
+      <div class="col-lg-7">
+        <div class="panel-card">
+          <h5 class="panel-title">Current Zone</h5>
+          <div id="ovZoneInfo" class="zone-info">No zone assigned yet -- set one in the Geofence tab.</div>
+          <div id="ovMiniMap" class="mini-map mt-2"></div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="panel-card h-100">
+          <h5 class="panel-title">Recent Alerts</h5>
+          <div id="ovRecentAlerts" class="recent-alerts-list">
+            <p class="text-muted small">No alerts yet.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAP -->
+  <div class="tab-pane d-none" id="tab-map">
+    <div class="row g-3">
+      <div class="col-lg-9">
+        <div class="panel-card p-0 overflow-hidden">
+          <div id="liveMap" class="live-map"></div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="panel-card breach-panel">
+          <button class="breach-toggle w-100" id="breachToggle">
+            <i class="fa-solid fa-triangle-exclamation"></i> Simulate Out-of-Zone Breach
+            <i class="fa-solid fa-chevron-down float-end"></i>
+          </button>
+          <div id="breachBody" class="breach-body d-none">
+            <p class="small text-muted">Pick a location outside the current zone to demo a geofence breach (no need to physically move the tracker).</p>
+            <select id="breachLocationSelect" class="form-select form-select-sm mb-2"></select>
+            <button id="breachSubmitBtn" class="btn btn-sm btn-danger-soft w-100">Trigger Breach</button>
+            <div id="breachResult" class="small mt-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEALTH -->
+  <div class="tab-pane d-none" id="tab-health">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="digital-card">
+          <div class="digital-label">Heart Rate</div>
+          <div class="digital-value" id="hHeartRate">-- <span class="digital-unit">bpm</span></div>
+          <div class="digital-comment" id="hHeartComment">Waiting for reading...</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="digital-card">
+          <div class="digital-label">SpO2</div>
+          <div class="digital-value" id="hSpo2">-- <span class="digital-unit">%</span></div>
+          <div class="digital-comment" id="hSpo2Comment">Waiting for reading...</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="digital-card">
+          <div class="digital-label">Body Temperature</div>
+          <div class="digital-value" id="hTemp">-- <span class="digital-unit">°C</span></div>
+          <div class="digital-comment" id="hTempComment">Waiting for reading...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-card mt-3">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class="panel-title mb-0">Trends</h5>
+        <div class="btn-group btn-group-sm" role="group">
+          <button class="btn btn-outline-secondary active" data-range="24h">24h</button>
+          <button class="btn btn-outline-secondary" data-range="7d">7d</button>
+        </div>
+      </div>
+      <canvas id="vitalsChart" height="90"></canvas>
+    </div>
+  </div>
+
+  <!-- GEOFENCE -->
+  <div class="tab-pane d-none" id="tab-geofence">
+    <div class="panel-card">
+      <h5 class="panel-title">Choose a Geofence Plan</h5>
+      <p class="text-muted small">Pick from the pool of designated places. The tracker will simulate realistic movement within the current stop and alert you if it ever reports a position outside all assigned places.</p>
+      <div id="zoneGroupOptions" class="zone-group-grid"></div>
+    </div>
+
+    <div class="panel-card mt-3">
+      <h5 class="panel-title">Current Status</h5>
+      <div id="currentZoneStatus" class="zone-info">No child selected.</div>
+    </div>
+  </div>
+
+  <!-- ALERTS -->
+  <div class="tab-pane d-none" id="tab-alerts">
+    <div class="panel-card">
+      <h5 class="panel-title">Alert Log</h5>
+      <div id="alertsTable"></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="tab-pane d-none" id="tab-settings">
+    <div class="panel-card">
+      <h5 class="panel-title">Child Profiles</h5>
+      <div id="childrenList" class="mb-3"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Add Child Modal -->
+<div class="modal fade" id="addChildModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Register Child Profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addChildForm">
+          <div class="mb-2">
+            <label class="form-label">Child's Name</label>
+            <input type="text" class="form-control" id="childName" required>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Date of Birth</label>
+            <input type="date" class="form-control" id="childDob">
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Parent Phone (E.164, e.g. +263771234567)</label>
+            <input type="tel" class="form-control" id="childPhone" required>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Tracker Device ID</label>
+            <input type="text" class="form-control" id="childDeviceMac" placeholder="TRACKER-001" required>
+            <div class="form-text">Must match DEVICE_ID in the tracker's firmware config.h. Only one child can use a given tracker at a time.</div>
+          </div>
+          <div id="addChildError" class="alert alert-danger py-2 d-none"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" id="saveChildBtn">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Emergency Alert Overlay -->
+<div id="emergencyOverlay" class="emergency-overlay d-none">
+  <div class="emergency-box">
+    <div class="emergency-icon">🚨</div>
+    <div class="emergency-title" id="emergencyTitle">SOS ALERT</div>
+    <div class="emergency-message" id="emergencyMessage"></div>
+    <button class="btn btn-light btn-lg mt-3" id="emergencyAckBtn">Acknowledge</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+<script src="/js/api.js"></script>
+<script src="/js/socket-client.js"></script>
+<script src="/js/children.js"></script>
+<script src="/js/map.js"></script>
+<script src="/js/vitals.js"></script>
+<script src="/js/alerts.js"></script>
+<script src="/js/geofence-zones.js"></script>
+<script src="/js/breach-simulator.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>

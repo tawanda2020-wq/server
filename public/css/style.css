@@ -1,0 +1,172 @@
+/* ------------------------------------------------------------------
+   Little Compass dashboard styling.
+   Palette: blush rose + soft lavender + warm coral accents, on a
+   warm off-white base -- modern, clean, gently feminine per the
+   project's aesthetic brief, kept professional and readable.
+   ------------------------------------------------------------------ */
+
+:root {
+  --rose-50:  #fff5f7;
+  --rose-100: #ffe3ea;
+  --rose-300: #f7a8c4;
+  --rose-500: #ec6a9c;
+  --rose-600: #d94f85;
+  --rose-700: #b83d6d;
+  --lavender-200: #e7defb;
+  --lavender-400: #b9a4ec;
+  --lavender-600: #8a6fd1;
+  --coral-500: #ff7a7a;
+  --coral-600: #f0575a;
+  --ink-900: #3a2e3c;
+  --ink-600: #7a6b7d;
+  --surface: #fffbfc;
+  --surface-alt: #f7eef2;
+  --success: #4fae8e;
+  --warning: #f0b95a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(180deg, var(--rose-50) 0%, #fdf6f8 100%);
+  color: var(--ink-900);
+}
+
+h1, h2, h3, h4, h5, .brand-title, .panel-title {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+}
+
+/* ---- login page ---- */
+.login-body { min-height: 100vh; background: radial-gradient(circle at 20% 20%, var(--lavender-200), transparent 60%), radial-gradient(circle at 80% 80%, var(--rose-100), transparent 60%), var(--surface); }
+.login-card { background: #fff; border-radius: 24px; padding: 2.5rem; width: 100%; max-width: 400px; }
+.brand-mark { font-size: 2.5rem; }
+.brand-title { color: var(--rose-700); margin-bottom: 0; }
+.brand-subtitle { color: var(--ink-600); font-size: 0.9rem; }
+.demo-hint { color: var(--ink-600); font-size: 0.85rem; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--rose-500), var(--lavender-600));
+  border: none;
+}
+.btn-primary:hover, .btn-primary:focus {
+  background: linear-gradient(135deg, var(--rose-600), var(--lavender-600));
+}
+
+/* ---- navbar ---- */
+.app-navbar {
+  background: linear-gradient(120deg, var(--rose-600), var(--lavender-600));
+  padding: 0.85rem 0;
+}
+.navbar-brand { color: #fff !important; font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 1.25rem; }
+.brand-mark-sm { font-size: 1.4rem; }
+.child-selector { min-width: 170px; }
+.conn-badge { font-weight: 500; }
+.conn-badge.online { background: var(--success); }
+.conn-badge.offline { background: #b8a2ab; }
+.btn-soft-pink { background: var(--rose-100); color: var(--rose-700); border: none; font-weight: 600; }
+.btn-soft-pink:hover { background: var(--rose-300); color: #fff; }
+
+/* ---- tabs ---- */
+.app-tabs .nav-link {
+  color: var(--ink-600);
+  background: #fff;
+  border-radius: 999px;
+  margin-right: 0.4rem;
+  padding: 0.5rem 1.1rem;
+  font-weight: 600;
+  border: 1px solid var(--rose-100);
+}
+.app-tabs .nav-link.active {
+  background: linear-gradient(135deg, var(--rose-500), var(--lavender-600));
+  color: #fff;
+  border-color: transparent;
+}
+.tab-pane.d-none { display: none !important; }
+
+/* ---- cards ---- */
+.panel-card, .stat-card, .digital-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 1.25rem 1.4rem;
+  box-shadow: 0 6px 20px rgba(200, 120, 150, 0.08);
+  border: 1px solid var(--rose-100);
+}
+.panel-title { color: var(--rose-700); font-size: 1.05rem; }
+
+.stat-card { text-align: center; }
+.stat-icon { font-size: 1.6rem; }
+.stat-value { font-size: 1.8rem; font-weight: 700; color: var(--ink-900); }
+.stat-label { color: var(--ink-600); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+
+.digital-card { text-align: center; }
+.digital-label { color: var(--ink-600); font-weight: 600; margin-bottom: 0.5rem; }
+.digital-value {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--rose-700);
+  font-variant-numeric: tabular-nums;
+}
+.digital-unit { font-size: 1rem; color: var(--ink-600); }
+.digital-comment { font-size: 0.85rem; margin-top: 0.4rem; color: var(--ink-600); }
+.digital-card.state-alert .digital-value { color: var(--coral-600); }
+.digital-card.state-alert .digital-comment { color: var(--coral-600); font-weight: 600; }
+
+.zone-info { background: var(--surface-alt); border-radius: 12px; padding: 0.9rem 1rem; font-size: 0.95rem; }
+.mini-map, .live-map { width: 100%; border-radius: 14px; }
+.mini-map { height: 220px; }
+.live-map { height: 62vh; min-height: 420px; border-radius: 0; }
+
+/* ---- breach panel ---- */
+.breach-panel { padding: 0; overflow: hidden; }
+.breach-toggle {
+  border: none; background: var(--coral-500); color: #fff; font-weight: 600;
+  padding: 0.9rem 1.1rem; width: 100%; text-align: left; border-radius: 18px 18px 0 0;
+}
+.breach-toggle:hover { background: var(--coral-600); }
+.breach-body { padding: 1rem 1.1rem 1.2rem; }
+.btn-danger-soft { background: var(--coral-500); color: #fff; border: none; font-weight: 600; }
+.btn-danger-soft:hover { background: var(--coral-600); color: #fff; }
+
+/* ---- recent alerts / alert log ---- */
+.recent-alerts-list .alert-row, #alertsTable .alert-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.6rem 0.2rem; border-bottom: 1px solid var(--rose-100); font-size: 0.9rem;
+}
+.alert-type-badge {
+  display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; color: #fff;
+}
+.badge-geofence_breach { background: var(--lavender-600); }
+.badge-fall { background: var(--coral-600); }
+.badge-sos { background: #c0392b; }
+.badge-high_temp, .badge-low_temp { background: var(--warning); color: var(--ink-900); }
+.badge-low_battery { background: #8a8a8a; }
+
+/* ---- zone group picker ---- */
+.zone-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.8rem; }
+.zone-group-card {
+  background: var(--surface-alt); border: 2px solid transparent; border-radius: 14px;
+  padding: 1rem; cursor: pointer; transition: all 0.15s ease;
+}
+.zone-group-card:hover { border-color: var(--rose-300); }
+.zone-group-card.selected { border-color: var(--rose-500); background: var(--rose-100); }
+.zone-group-card .zg-label { font-weight: 700; color: var(--ink-900); }
+.zone-group-card .zg-stops { font-size: 0.8rem; color: var(--ink-600); margin-top: 0.3rem; }
+
+/* ---- emergency overlay ---- */
+.emergency-overlay {
+  position: fixed; inset: 0; background: rgba(192, 57, 43, 0.92);
+  display: flex; align-items: center; justify-content: center; z-index: 2000;
+  color: #fff; text-align: center;
+}
+.emergency-overlay.d-none { display: none !important; }
+.emergency-icon { font-size: 4rem; }
+.emergency-title { font-family: 'Quicksand', sans-serif; font-size: 2.2rem; font-weight: 700; }
+.emergency-message { font-size: 1.1rem; margin-top: 0.5rem; max-width: 500px; }
+
+@media (max-width: 768px) {
+  .live-map { height: 50vh; }
+  .child-selector { min-width: 120px; }
+}

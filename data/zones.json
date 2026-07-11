@@ -1,0 +1,44 @@
+{
+  "_comment": "Pool of pre-designated places a parent can pick from when setting up geofencing, per the project decision to avoid needing the device to physically move to demo geofencing. Coordinates are real Harare locations used for demo realism.",
+
+  "zonePool": [
+    { "id": "home",        "name": "Home (Borrowdale)",        "lat": -17.7840, "lng": 31.0855, "radiusM": 150, "category": "home" },
+    { "id": "school",      "name": "School (Avondale)",        "lat": -17.8010, "lng": 31.0392, "radiusM": 200, "category": "school" },
+    { "id": "granny",      "name": "Granny's House (Mt Pleasant)", "lat": -17.7765, "lng": 31.0335, "radiusM": 150, "category": "family" },
+    { "id": "park",        "name": "Harare Gardens (Park)",    "lat": -17.8264, "lng": 31.0492, "radiusM": 180, "category": "recreation" }
+  ],
+
+  "_comment2": "A group is what the parent actually assigns to a child. A single-stop group just fences one place. A multi-stop group models a routine day/journey -- the server advances 'active_zone_stop_index' on children every JOURNEY_STOP_DURATION_MS (see services/thresholds.js) to cycle through the stops, and hands the CURRENT stop to the device as its one active GeoZone.",
+
+  "zoneGroups": [
+    {
+      "id": "home_only",
+      "label": "Home only",
+      "stops": ["home"]
+    },
+    {
+      "id": "school_only",
+      "label": "School only",
+      "stops": ["school"]
+    },
+    {
+      "id": "home_school_granny",
+      "label": "Daily routine: Home \u2192 School \u2192 Granny's \u2192 Home",
+      "stops": ["home", "school", "granny", "home"]
+    },
+    {
+      "id": "weekend_outing",
+      "label": "Weekend outing: Home \u2192 Park \u2192 Home",
+      "stops": ["home", "park", "home"]
+    }
+  ],
+
+  "_comment3": "Locations a parent can pick in the dashboard's 'Simulate Breach' panel -- each is deliberately far outside every zone above, so the breach check always fires as expected regardless of which zone group is currently active.",
+
+  "breachDemoLocations": [
+    { "id": "cbd",         "name": "Harare CBD (Julius Nyerere Way)", "lat": -17.8292, "lng": 31.0522 },
+    { "id": "airport_rd",  "name": "Robert Mugabe Intl Airport Rd",   "lat": -17.9318, "lng": 31.0928 },
+    { "id": "chitungwiza", "name": "Chitungwiza Town Centre",         "lat": -18.0127, "lng": 31.0755 },
+    { "id": "highfield",   "name": "Highfield",                       "lat": -17.8659, "lng": 30.9805 }
+  ]
+}
