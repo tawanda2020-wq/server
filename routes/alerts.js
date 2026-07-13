@@ -44,6 +44,8 @@ router.post('/:id/ack', (req, res) => {
       commandQueue.enqueueCommand(db, child.device_mac, 'sos_ack');
     } else if (alert.type === 'fall') {
       commandQueue.enqueueCommand(db, child.device_mac, 'fall_ack');
+    } else if (alert.type === 'geofence_breach') {
+      commandQueue.enqueueCommand(db, child.device_mac, 'breach_ack');
     }
   }
 

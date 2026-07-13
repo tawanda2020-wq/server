@@ -81,7 +81,7 @@ router.post('/breach-demo', (req, res) => {
   const zoneName = currentZone ? currentZone.name : (checkedZoneNames[0] || 'assigned zone');
 
   const alert = alertManager.raiseAlert(
-    db, io, child, 'geofence_breach', zoneName, location.lat, location.lng
+    db, io, child, 'geofence_breach', zoneName, location.lat, location.lng, { force: true }
   );
 
   commandQueue.enqueueCommand(db, child.device_mac, 'breach_demo', zoneName, '');
@@ -90,6 +90,7 @@ router.post('/breach-demo', (req, res) => {
     io.emit('geofence:breach', {
       childId: child.id,
       childName: child.name,
+      alertId: alert ? alert.id : null,
       location,
       zoneName,
       timestamp: new Date().toISOString(),

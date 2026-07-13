@@ -106,6 +106,7 @@ document.getElementById('saveChildBtn').addEventListener('click', async () => {
 });
 
 document.getElementById('logoutBtn').addEventListener('click', async () => {
+  if (!confirm('Are you sure you want to log out?')) return;
   await Api.post('/api/auth/logout');
   window.location.href = '/login.html';
 });
