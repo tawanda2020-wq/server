@@ -170,3 +170,34 @@ h1, h2, h3, h4, h5, .brand-title, .panel-title {
   .live-map { height: 50vh; }
   .child-selector { min-width: 120px; }
 }
+
+/* ---- scrollable alert containers (don't let the page grow forever) ---- */
+.scrollable-alerts {
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.scrollable-alerts-tall {
+  max-height: 65vh;
+}
+.scrollable-alerts::-webkit-scrollbar { width: 8px; }
+.scrollable-alerts::-webkit-scrollbar-thumb { background: var(--rose-300); border-radius: 999px; }
+.scrollable-alerts::-webkit-scrollbar-track { background: var(--surface-alt); }
+
+/* ---- Child Safety Status panel ---- */
+.safety-panel { border: 2px solid var(--rose-300); }
+.safety-chip {
+  background: var(--surface-alt);
+  border-radius: 12px;
+  padding: 0.7rem 0.9rem;
+  text-align: center;
+}
+.safety-chip-label { font-size: 0.75rem; color: var(--ink-600); text-transform: uppercase; letter-spacing: 0.04em; }
+.safety-chip-value { font-weight: 700; font-size: 1.05rem; color: var(--ink-900); margin-top: 0.15rem; }
+.safety-chip.status-good .safety-chip-value { color: var(--success); }
+.safety-chip.status-warning .safety-chip-value { color: var(--warning); }
+.safety-chip.status-danger .safety-chip-value { color: var(--coral-600); }
+
+/* ---- breach / emergency overlay should feel unmistakably critical ---- */
+.emergency-overlay.breach-theme { background: rgba(184, 61, 109, 0.94); }
+

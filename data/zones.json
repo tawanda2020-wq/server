@@ -2,11 +2,12 @@
   "_comment": "Pool of pre-designated places a parent can pick from when setting up geofencing, per the project decision to avoid needing the device to physically move to demo geofencing. Coordinates are real Harare locations used for demo realism.",
 
   "zonePool": [
-    { "id": "home",        "name": "Home (Borrowdale)",        "lat": -17.7840, "lng": 31.0855, "radiusM": 150, "category": "home" },
-    { "id": "school",      "name": "School (Avondale)",        "lat": -17.8010, "lng": 31.0392, "radiusM": 200, "category": "school" },
+    { "id": "home",        "name": "Home (Borrowdale)",        "lat": -17.7840, "lng": 31.0855, "radiusM": 150, "category": "home" }, 
+    { "id": "school",      "name": "School (Avondale)",        "lat": -17.8010, "lng": 31.0392, "radiusM": 500, "category": "school" },
     { "id": "granny",      "name": "Granny's House (Mt Pleasant)", "lat": -17.7765, "lng": 31.0335, "radiusM": 150, "category": "family" },
-    { "id": "park",        "name": "Harare Gardens (Park)",    "lat": -17.8264, "lng": 31.0492, "radiusM": 180, "category": "recreation" }
+    { "id": "park",        "name": "Harare Gardens (Park)",    "lat": -17.8264, "lng": 31.0492, "radiusM": 200, "category": "recreation" }
   ],
+
 
   "_comment2": "A group is what the parent actually assigns to a child. A single-stop group just fences one place. A multi-stop group models a routine day/journey -- the server advances 'active_zone_stop_index' on children every JOURNEY_STOP_DURATION_MS (see services/thresholds.js) to cycle through the stops, and hands the CURRENT stop to the device as its one active GeoZone.",
 

@@ -1,7 +1,9 @@
 /*
  * alerts.js -- alert log rendering (Overview "recent" + full Alerts
  * tab), acknowledgement actions, unread badge count, and the
- * full-screen emergency overlay for SOS/fall events.
+ * full-screen emergency overlay for SOS/fall/geofence-breach events.
+ * The overlay stays up until the parent explicitly acknowledges it --
+ * it is never auto-dismissed by a timer or by new data arriving.
  */
 
 const ALERT_TYPE_LABELS = {
@@ -14,6 +16,7 @@ const ALERT_TYPE_LABELS = {
 };
 
 let unreadCount = 0;
+let overlayActiveForAlertId = null;
 
 function alertBadgeHtml(type) {
   return `<span class="alert-type-badge badge-${type}">${ALERT_TYPE_LABELS[type] || type}</span>`;
@@ -49,6 +52,7 @@ async function loadAlerts() {
     : '<p class="text-muted small">No alerts yet.</p>';
 
   wireAckButtons();
+  updateSafetyStatusChips(rows);
 }
 
 function wireAckButtons() {
@@ -68,25 +72,36 @@ function bumpAlertBadge() {
   badge.classList.remove('d-none');
 }
 
+const EMERGENCY_TITLES = {
+  sos: 'SOS EMERGENCY',
+  fall: 'FALL DETECTED',
+  geofence_breach: 'ZONE BREACH',
+};
+
 function showEmergencyOverlay(alert, childName) {
   const overlay = document.getElementById('emergencyOverlay');
-  document.getElementById('emergencyTitle').textContent =
-    alert.type === 'sos' ? 'SOS EMERGENCY' : 'FALL DETECTED';
+  overlay.classList.toggle('breach-theme', alert.type === 'geofence_breach');
+  document.getElementById('emergencyTitle').textContent = EMERGENCY_TITLES[alert.type] || 'ALERT';
   document.getElementById('emergencyMessage').textContent = `${childName}: ${alert.message}`;
   overlay.classList.remove('d-none');
+  overlayActiveForAlertId = alert.id;
 
   document.getElementById('emergencyAckBtn').onclick = async () => {
     await Api.post(`/api/alerts/${alert.id}/ack`);
     overlay.classList.add('d-none');
+    overlayActiveForAlertId = null;
     loadAlerts();
   };
 }
+
+const OVERLAY_TYPES = new Set(['sos', 'fall', 'geofence_breach']);
 
 document.addEventListener('alert:new', (e) => {
   const a = e.detail;
   bumpAlertBadge();
   if (a.child_id === AppState.currentChildId) loadAlerts();
-  if ((a.type === 'sos' || a.type === 'fall') && a.child_id === AppState.currentChildId) {
+
+  if (OVERLAY_TYPES.has(a.type) && a.child_id === AppState.currentChildId && overlayActiveForAlertId === null) {
     showEmergencyOverlay(a, a.childName);
   }
 });

@@ -52,18 +52,36 @@ function renderCurrentZoneStatus() {
     (${child.currentZone.radiusM}m radius). The tracker will show realistic movement within this area.`;
 }
 
+// Overview tab's "Current Zone" panel
+function renderOverviewZoneInfo() {
+  const box = document.getElementById('ovZoneInfo');
+  if (!box) return;
+  const child = getCurrentChild();
+  if (!child) { box.textContent = 'No child selected.'; return; }
+  if (!child.currentZone) {
+    box.textContent = 'No zone assigned yet -- set one in the Geofence tab.';
+    return;
+  }
+  box.innerHTML = `<strong>${escapeHtml(child.name)}</strong> is currently expected at
+    <strong>${escapeHtml(child.currentZone.name)}</strong> (${child.currentZone.radiusM}m safe radius).`;
+}
+
 document.addEventListener('children:loaded', () => {
   renderZoneGroupOptions();
   renderCurrentZoneStatus();
+  renderOverviewZoneInfo();
 });
 document.addEventListener('child:switched', () => {
   renderZoneGroupOptions();
   renderCurrentZoneStatus();
+  renderOverviewZoneInfo();
 });
 document.addEventListener('telemetry:update', (e) => {
   if (e.detail.childId === AppState.currentChildId) {
     const child = getCurrentChild();
-    if (child) child.currentZone = e.detail.currentZone;
+    if (child && e.detail.currentZone) child.currentZone = e.detail.currentZone;
     renderCurrentZoneStatus();
+    renderOverviewZoneInfo();
   }
 });
+
