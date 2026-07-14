@@ -151,143 +151,144 @@
           </div>
         </div>
       </div>
+    </div>
 
-        <!-- HEALTH -->
-        <div class="tab-pane d-none" id="tab-health">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <div class="digital-card">
-                <div class="digital-label">Heart Rate</div>
-                <div class="digital-value" id="hHeartRate">-- <span class="digital-unit">bpm</span></div>
-                <div class="digital-comment" id="hHeartComment">Waiting for reading...</div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="digital-card">
-                <div class="digital-label">SpO2</div>
-                <div class="digital-value" id="hSpo2">-- <span class="digital-unit">%</span></div>
-                <div class="digital-comment" id="hSpo2Comment">Waiting for reading...</div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="digital-card">
-                <div class="digital-label">Body Temperature</div>
-                <div class="digital-value" id="hTemp">-- <span class="digital-unit">°C</span></div>
-                <div class="digital-comment" id="hTempComment">Waiting for reading...</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="panel-card mt-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h5 class="panel-title mb-0">Trends</h5>
-              <div class="btn-group btn-group-sm" role="group">
-                <button class="btn btn-outline-secondary active" data-range="24h">24h</button>
-                <button class="btn btn-outline-secondary" data-range="7d">7d</button>
-              </div>
-            </div>
-            <canvas id="vitalsChart" height="90"></canvas>
+    <!-- HEALTH -->
+    <div class="tab-pane d-none" id="tab-health">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="digital-card">
+            <div class="digital-label">Heart Rate</div>
+            <div class="digital-value" id="hHeartRate">-- <span class="digital-unit">bpm</span></div>
+            <div class="digital-comment" id="hHeartComment">Waiting for reading...</div>
           </div>
         </div>
-
-        <!-- GEOFENCE -->
-        <div class="tab-pane d-none" id="tab-geofence">
-          <div class="panel-card">
-            <h5 class="panel-title">Choose a Geofence Plan</h5>
-            <p class="text-muted small">Pick from the pool of designated places. The tracker will simulate realistic
-              movement within the current stop and alert you if it ever reports a position outside all assigned places.
-            </p>
-            <div id="zoneGroupOptions" class="zone-group-grid"></div>
-          </div>
-
-          <div class="panel-card mt-3">
-            <h5 class="panel-title">Current Status</h5>
-            <div id="currentZoneStatus" class="zone-info">No child selected.</div>
+        <div class="col-md-4">
+          <div class="digital-card">
+            <div class="digital-label">SpO2</div>
+            <div class="digital-value" id="hSpo2">-- <span class="digital-unit">%</span></div>
+            <div class="digital-comment" id="hSpo2Comment">Waiting for reading...</div>
           </div>
         </div>
-
-        <!-- ALERTS -->
-        <div class="tab-pane d-none" id="tab-alerts">
-          <div class="panel-card">
-            <h5 class="panel-title">Alert Log</h5>
-            <div id="alertsTable" class="scrollable-alerts scrollable-alerts-tall"></div>
-          </div>
-        </div>
-
-        <!-- SETTINGS -->
-        <div class="tab-pane d-none" id="tab-settings">
-          <div class="panel-card">
-            <h5 class="panel-title">Child Profiles</h5>
-            <div id="childrenList" class="mb-3"></div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Add Child Modal -->
-      <div class="modal fade" id="addChildModal" tabindex="-1">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Register Child Profile</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-              <form id="addChildForm">
-                <div class="mb-2">
-                  <label class="form-label">Child's Name</label>
-                  <input type="text" class="form-control" id="childName" required>
-                </div>
-                <div class="mb-2">
-                  <label class="form-label">Date of Birth</label>
-                  <input type="date" class="form-control" id="childDob">
-                </div>
-                <div class="mb-2">
-                  <label class="form-label">Parent Phone (E.164, e.g. +263771234567)</label>
-                  <input type="tel" class="form-control" id="childPhone" required>
-                </div>
-                <div class="mb-2">
-                  <label class="form-label">Tracker Device ID</label>
-                  <input type="text" class="form-control" id="childDeviceMac" placeholder="TRACKER-001" required>
-                  <div class="form-text">Must match DEVICE_ID in the tracker's firmware config.h. Only one child can use
-                    a given tracker at a time.</div>
-                </div>
-                <div id="addChildError" class="alert alert-danger py-2 d-none"></div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button class="btn btn-primary" id="saveChildBtn">Save</button>
-            </div>
+        <div class="col-md-4">
+          <div class="digital-card">
+            <div class="digital-label">Body Temperature</div>
+            <div class="digital-value" id="hTemp">-- <span class="digital-unit">°C</span></div>
+            <div class="digital-comment" id="hTempComment">Waiting for reading...</div>
           </div>
         </div>
       </div>
 
-      <!-- Emergency Alert Overlay -->
-      <div id="emergencyOverlay" class="emergency-overlay d-none">
-        <div class="emergency-box">
-          <div class="emergency-icon">🚨</div>
-          <div class="emergency-title" id="emergencyTitle">SOS ALERT</div>
-          <div class="emergency-message" id="emergencyMessage"></div>
-          <button class="btn btn-light btn-lg mt-3" id="emergencyAckBtn">Acknowledge</button>
+      <div class="panel-card mt-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h5 class="panel-title mb-0">Trends</h5>
+          <div class="btn-group btn-group-sm" role="group">
+            <button class="btn btn-outline-secondary active" data-range="24h">24h</button>
+            <button class="btn btn-outline-secondary" data-range="7d">7d</button>
+          </div>
         </div>
+        <canvas id="vitalsChart" height="90"></canvas>
+      </div>
+    </div>
+
+    <!-- GEOFENCE -->
+    <div class="tab-pane d-none" id="tab-geofence">
+      <div class="panel-card">
+        <h5 class="panel-title">Choose a Geofence Plan</h5>
+        <p class="text-muted small">Pick from the pool of designated places. The tracker will simulate realistic
+          movement within the current stop and alert you if it ever reports a position outside all assigned places.
+        </p>
+        <div id="zoneGroupOptions" class="zone-group-grid"></div>
       </div>
 
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-      <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+      <div class="panel-card mt-3">
+        <h5 class="panel-title">Current Status</h5>
+        <div id="currentZoneStatus" class="zone-info">No child selected.</div>
+      </div>
+    </div>
 
-      <script src="/js/api.js"></script>
-      <script src="/js/socket-client.js"></script>
-      <script src="/js/children.js"></script>
-      <script src="/js/map.js"></script>
-      <script src="/js/vitals.js"></script>
-      <script src="/js/alerts.js"></script>
-      <script src="/js/safety-status.js"></script>
-      <script src="/js/geofence-zones.js"></script>
-      <script src="/js/breach-simulator.js"></script>
-      <script src="/js/dashboard.js"></script>
+    <!-- ALERTS -->
+    <div class="tab-pane d-none" id="tab-alerts">
+      <div class="panel-card">
+        <h5 class="panel-title">Alert Log</h5>
+        <div id="alertsTable" class="scrollable-alerts scrollable-alerts-tall"></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="tab-pane d-none" id="tab-settings">
+      <div class="panel-card">
+        <h5 class="panel-title">Child Profiles</h5>
+        <div id="childrenList" class="mb-3"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Add Child Modal -->
+  <div class="modal fade" id="addChildModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Register Child Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addChildForm">
+            <div class="mb-2">
+              <label class="form-label">Child's Name</label>
+              <input type="text" class="form-control" id="childName" required>
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Date of Birth</label>
+              <input type="date" class="form-control" id="childDob">
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Parent Phone (E.164, e.g. +263771234567)</label>
+              <input type="tel" class="form-control" id="childPhone" required>
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Tracker Device ID</label>
+              <input type="text" class="form-control" id="childDeviceMac" placeholder="TRACKER-001" required>
+              <div class="form-text">Must match DEVICE_ID in the tracker's firmware config.h. Only one child can use
+                a given tracker at a time.</div>
+            </div>
+            <div id="addChildError" class="alert alert-danger py-2 d-none"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary" id="saveChildBtn">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Emergency Alert Overlay -->
+  <div id="emergencyOverlay" class="emergency-overlay d-none">
+    <div class="emergency-box">
+      <div class="emergency-icon">🚨</div>
+      <div class="emergency-title" id="emergencyTitle">SOS ALERT</div>
+      <div class="emergency-message" id="emergencyMessage"></div>
+      <button class="btn btn-light btn-lg mt-3" id="emergencyAckBtn">Acknowledge</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/socket-client.js"></script>
+  <script src="/js/children.js"></script>
+  <script src="/js/map.js"></script>
+  <script src="/js/vitals.js"></script>
+  <script src="/js/alerts.js"></script>
+  <script src="/js/safety-status.js"></script>
+  <script src="/js/geofence-zones.js"></script>
+  <script src="/js/breach-simulator.js"></script>
+  <script src="/js/dashboard.js"></script>
 </body>
 
 </html>

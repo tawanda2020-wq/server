@@ -13,6 +13,7 @@ const db = require('../db/database');
 const requireAuth = require('../middleware/requireAuth');
 const geofenceEngine = require('../services/geofenceEngine');
 const thresholds = require('../services/thresholds');
+const commandQueue = require('../services/commandQueue');   
 
 router.use(requireAuth);
 
@@ -65,11 +66,28 @@ router.post('/', (req, res) => {
     .run(name, dob || null, parentPhone, deviceMac || null);
 
   const child = db.prepare(`SELECT * FROM children WHERE id = ?`).get(info.lastInsertRowid);
+
+  if (child.device_mac) {                                                          
+    commandQueue.enqueueCommand(                                                   
+      db, child.device_mac, 'child_linked',                                        
+      `${child.name} is now linked to this tracker.`                               
+    );                                                                             
+  }                                                                                
+
   res.status(201).json(child);
 });
 
 router.delete('/:id', (req, res) => {
+  const child = db.prepare(`SELECT * FROM children WHERE id = ?`).get(req.params.id);
   db.prepare(`DELETE FROM children WHERE id = ?`).run(req.params.id);
+
+  if (child && child.device_mac) {
+    commandQueue.enqueueCommand(
+      db, child.device_mac, 'child_unlinked',
+      `${child.name} was removed from this tracker.`
+    );
+  }
+
   res.json({ ok: true });
 });
 
